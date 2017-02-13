@@ -49,9 +49,10 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
-    "firebase": "^2.4.2",
+    "firebase": "^3.6.9",
     "mobx": "^3.1.0",
     "mobx-logger": "^0.4.0",
+    "object-assign": "^4.1.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
   },

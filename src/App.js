@@ -1,48 +1,44 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
+import {login} from './libs/firebase';
+import {me} from './stores';
 import mobx from 'mobx'
-const {observable, computed, autorun} = mobx;
+const {observable, computed, autorun,action,observe,incercept} = mobx;
 import './App.css';
-var Firebase = require("firebase");
+const objectAssign = require('object-assign');
 import {enableLogging} from 'mobx-logger';
 enableLogging()
 
-var ref = new Firebase("https://tks-blog.firebaseio.com");
-var authData = ref.getAuth();
-if (authData) {
-  console.log("User " + authData.uid + " is logged in with " + authData.provider);
-} else {
-  ref.authWithOAuthPopup("twitter", function(error, authData) {
-    if (error) {
-      console.log("Login Failed!", error);
-    } else {
-      console.log("Authenticated successfully with payload:", authData);
 
-      var usersRef = ref.child("users");
-      usersRef.set({
-        [authData.uid]: {
-          twitter:authData.twitter
-        }
-      });
-    }
-  });
+
+
+
+
+
+var disposer = autorun(() => console.log());
+disposer()
+
+me.accessToken = 'aaa'
+
+
+console.log(me)
+
+
+const onLogin = (user)=>{
+  me.displayName = user.displayName
+  me.photoURL = user.photoURL
+  me.providerId = user.providerId
+  me.uid = user.uid
 }
 
-class Todo {
-    id = Math.random();
-    @observable title;
-    @observable finished = false;
-    constructor(title) {
-        this.title = title;
-    }
-}
+window.me = ()=> console.log(me.uid)
 
-let todo = new Todo('name')
+observe(me, (change) => {
+    console.log(change.type, change.name, "from", change.oldValue, "to", change.object[change.name]);
+});
 
-var disposer = autorun(() => console.log(todo.title));
+login(onLogin)
 
-
-todo.title = 'hello'
 
 class App extends Component {
   render() {
