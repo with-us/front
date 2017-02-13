@@ -7,7 +7,11 @@ const {observable, computed, autorun,action,observe,incercept} = mobx;
 import './App.css';
 const objectAssign = require('object-assign');
 import {enableLogging} from 'mobx-logger';
+import {onLoad} from './events'
+
 enableLogging()
+login()
+onLoad()
 
 
 
@@ -15,21 +19,6 @@ enableLogging()
 
 
 
-var disposer = autorun(() => console.log());
-disposer()
-
-me.accessToken = 'aaa'
-
-
-console.log(me)
-
-
-const onLogin = (user)=>{
-  me.displayName = user.displayName
-  me.photoURL = user.photoURL
-  me.providerId = user.providerId
-  me.uid = user.uid
-}
 
 window.me = ()=> console.log(me.uid)
 
@@ -37,7 +26,6 @@ observe(me, (change) => {
     console.log(change.type, change.name, "from", change.oldValue, "to", change.object[change.name]);
 });
 
-login(onLogin)
 
 
 class App extends Component {
